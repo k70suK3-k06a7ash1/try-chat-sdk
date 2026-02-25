@@ -18,13 +18,58 @@ npm install
 
 ### 2. Slack App の作成
 
-https://api.slack.com/apps で新しいアプリを作成し、以下の Bot Token Scopes を付与:
+1. https://api.slack.com/apps を開き **Create New App** をクリック
+2. **From a manifest** を選択
+3. アプリをインストールするワークスペースを選択
+4. 以下の YAML を貼り付けて作成（`request_url` は手順 6 で差し替え）:
 
-- `app_mentions:read`
-- `channels:read`
-- `channels:history`
-- `chat:write`
-- `im:read`
+```yaml
+display_information:
+  name: Ollama Bot
+  description: Ollama-powered bot built with chat-sdk
+
+features:
+  bot_user:
+    display_name: ollama-bot
+    always_online: true
+
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - channels:read
+      - chat:write
+      - groups:history
+      - groups:read
+      - im:history
+      - im:read
+      - mpim:history
+      - mpim:read
+      - reactions:read
+      - reactions:write
+      - users:read
+
+settings:
+  event_subscriptions:
+    request_url: https://your-domain.com/api/webhooks/slack
+    bot_events:
+      - app_mention
+      - message.channels
+      - message.groups
+      - message.im
+      - message.mpim
+  interactivity:
+    is_enabled: true
+    request_url: https://your-domain.com/api/webhooks/slack
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
+```
+
+5. 作成後 **Install to Workspace** でワークスペースにインストール
+6. サイドバーの **OAuth & Permissions** から `Bot User OAuth Token` (`xoxb-...`) をコピー
+7. サイドバーの **Basic Information** から `Signing Secret` をコピー
 
 ### 3. 環境変数の設定
 
