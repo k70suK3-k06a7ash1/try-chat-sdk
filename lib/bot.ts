@@ -12,6 +12,7 @@ export const bot = new Chat({
     slack: createSlackAdapter(),
   },
   state: createMemoryState(),
+  logger: "debug",
 });
 
 // メンション時: スレッドを購読して AI で返答

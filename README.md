@@ -134,3 +134,5 @@ ngrok 起動後に表示される Forwarding URL を確認し、Slack App に設
 1. ボットをチャンネルに招待
 2. `@ollama-bot` でメンションすると AI が返答
 3. 同じスレッド内で会話を継続可能（自動購読）
+
+詳しい動作確認手順・トラブルシューティングは [TESTING.md](./TESTING.md) を参照。
