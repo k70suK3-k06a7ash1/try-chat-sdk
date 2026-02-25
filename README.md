@@ -83,22 +83,51 @@ SLACK_SIGNING_SECRET=your-signing-secret
 ### 4. Ollama の起動
 
 ```sh
-ollama serve
+make ollama
 ```
 
 ### 5. 開発サーバーの起動
 
 ```sh
-npm run dev
+# dev サーバーと ngrok を同時に起動
+make start
+
+# または別々のターミナルで個別に起動
+make dev      # ターミナル1: Next.js dev サーバー
+make tunnel   # ターミナル2: ngrok トンネル
 ```
 
-### 6. Webhook URL の公開
+> ngrok が未インストールの場合は `brew install ngrok` で導入し、初回のみ認証トークンを設定:
+> ```sh
+> ngrok config add-authtoken <your-authtoken>
+> ```
+> アカウントは https://ngrok.com から無料で作成できる。
 
-ngrok 等で localhost を公開し、Slack App の Request URL に設定:
+### 6. Slack App の Request URL を更新
 
-```
-https://<your-url>/api/webhooks/slack
-```
+ngrok 起動後に表示される Forwarding URL を確認し、Slack App に設定する。
+
+1. https://api.slack.com/apps でアプリを開く
+2. **Event Subscriptions** → Request URL に ngrok URL + パスを入力:
+   ```
+   https://xxxx-xx-xx.ngrok-free.dev/api/webhooks/slack
+   ```
+   **注意**: ドメインだけでなく `/api/webhooks/slack` のパスまで含めること。「Verified」と表示されれば成功。
+3. **Interactivity & Shortcuts** → Request URL も同じ URL に変更
+4. それぞれ **Save Changes** を押す
+
+> ngrok を再起動すると URL が変わるので、その都度 Slack 側も更新が必要。
+
+## Make コマンド一覧
+
+| コマンド | 説明 |
+|---|---|
+| `make start` | dev サーバー + ngrok を同時起動 |
+| `make dev` | Next.js 開発サーバーのみ起動 |
+| `make tunnel` | ngrok トンネルのみ起動 |
+| `make build` | プロダクションビルド |
+| `make ollama` | Ollama サーバー起動 |
+| `make push` | git commit & push |
 
 ## 使い方
 
